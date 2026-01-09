@@ -1,4 +1,13 @@
-FROM ubuntu:latest
-LABEL authors="lml"
+FROM python:3.10
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+RUN pip install --upgrade pip
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt --no-cache-dir
+
+COPY . .
+
+CMD ["gunicorn", "--bind", "0.0.0.0:7000", "foodgram_backend.wsgi"]
